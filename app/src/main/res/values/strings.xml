@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">HÄLSO-APPEN Android Version</string>
+    <string name="app_name">CITY-INFO</string>
+    <string name="aboutstring">Denna app är anpassad för personer som vill ha åtkomst till generell informtaion kring olika länders huvudstäder såsom invånar antal till ytans storlek. Appensmålgrupp</string>
 </resources>
