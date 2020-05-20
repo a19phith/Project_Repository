@@ -3,13 +3,20 @@ package com.example.project_repository;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,17 +25,47 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    ProgressDialog progressDialog;
+
+    private ArrayList<String> list = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
+
+    private ArrayList<String> info = new ArrayList<>();
+    ArrayAdapter<String> secondadapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        adapter = new ArrayAdapter<String>(this,R.layout.list_items_textview,R.id.list_item, list);
+        secondadapter = new ArrayAdapter<String>(this,R.layout.list_items_textview, R.id.list_item, info);
 
-        Button button = findViewById(R.id.about);
-        button.setOnClickListener(new View.OnClickListener() {
+        ListView myListView = findViewById(R.id.list_view);
+        myListView.setAdapter(adapter);
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this,info.get(position), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button button1 = findViewById(R.id.thelist);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "list");
+                new JsonTask().execute("https://wwwlab.iit.his.se/a19phith/XML%20API%20PHP/appxml.json?type=a19phith");
+            }
+        });
+
+
+        Button button2 = findViewById(R.id.about);
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, getResources().getString(R.string.aboutstring), Toast.LENGTH_LONG).show();
@@ -43,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL(params[0]);
+                URL url = new URL("https://wwwlab.iit.his.se/a19phith/XML%20API%20PHP/appxml.json?type=a19phith");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
@@ -76,8 +113,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String json) {
-            Log.d("TAG", json);
+        protected void onPostExecute(String result) {
+            try {
+                list.clear();
+                info.clear();
+                JSONArray jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    final String name = jsonObject.getString("name");
+                    final String size = jsonObject.getString("size");
+                    final String location = jsonObject.getString("location");
+                    final String print = "NAME: " + name + ", LOCATION: " + location + ", SIZE: " + size + " square kilometer";
+
+                    list.add(name);
+                    info.add(print);
+                }
+                adapter.notifyDataSetChanged();
+                secondadapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
