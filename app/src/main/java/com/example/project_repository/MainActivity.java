@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     final String name = jsonObject.getString("name");
                     final String size = jsonObject.getString("size");
                     final String location = jsonObject.getString("location");
-                    final String print = "NAME: " + name + ", LOCATION: " + location + ", SIZE: " + size + " square kilometer";
+                    final String print = "NAME: " + name + ", LOCATION: " + location + ", SIZE: " + size + " (square kilometer)";
 
                     list.add(name);
                     info.add(print);

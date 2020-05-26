@@ -11,5 +11,5 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Denna app är anpassad för personer som vill ha åtkomst till generell informtaion kring olika länders huvudstäder såsom invånar antal till ytans storlek. Appensmålgrupp</string>
+    <string name="hello_blank_fragment">Denna app är anpassad för personer som vill ha åtkomst till generell informtaion kring olika länders huvudstäder såsom invånar antal till ytans storlek. Appensmålgrupp är anpassade för personer som vill antingen testa sina kunskaper om olika länders huvudstäder samt restande infomration. Eller för användare som har ett intresse för geografi.</string>
 </resources>
